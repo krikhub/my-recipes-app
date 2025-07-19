@@ -1,7 +1,8 @@
 @props ([
 
     'as' => 'h1',
-    'style' => 'lg'
+    'style' => 'lg',
+    'source' => null
 
 ])
 
@@ -17,10 +18,8 @@
 @endphp
 
 
-<{{ $as }}
-        {{ $attributes->merge(['class' => 'font-lato '. $styles[$style]])}}
->
-
- {{$slot}}
-</{{ $as }}
+<{{ $as }} 
+    {{ $attributes->merge(['href' => $source, 'class' => 'font-lato ' . ($styles[$style] ?? '')]) }}>
+    {{ $slot }}
+</{{ $as }}>
 
