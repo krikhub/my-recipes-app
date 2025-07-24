@@ -5,7 +5,7 @@ use App\Models\Recipe;
 
 
 Route::get('/', function () {
-    $recipes = Recipe::all();
+    $recipes = \App\Models\Recipe::with(['categories', 'tags', 'ingredients', 'nutrition'])->get();
     return view('home', compact('recipes'));
 });
 
