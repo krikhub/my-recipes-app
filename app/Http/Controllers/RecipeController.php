@@ -2,64 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Recipe;
 use Illuminate\Http\Request;
+use App\Models\Recipe;
+use Illuminate\Routing\Controller as BaseController;
 
-class RecipeController extends Controller
+class RecipeController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('recipes.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required',
+            'instructions' => 'required',
+            'image' => 'nullable|image|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images', 'public');
+            $validated['image'] = 'storage/' . $path;
+        }
+
+        auth()->user()->recipes()->create($validated);
+
+        return redirect()->route('dashboard')->with('success', 'Rezept gespeichert!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Recipe $recipe)
+    public function search(Request $request)
     {
-        //
+        $query = $request->input('query');
+        $recipes = Recipe::where('title', 'like', '%' . $query . '%')->get();
+        return view('search-results', compact('recipes'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Recipe $recipe)
+   public function index(Request $request)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Recipe $recipe)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Recipe $recipe)
-    {
-        //
+        $query = $request->input('query');
+        if ($query) {
+            $recipes = Recipe::where('title', 'like', '%' . $query . '%')->get();
+        } else {
+            $recipes = Recipe::all();
+        }
+        return view('home', compact('recipes'));
     }
 }

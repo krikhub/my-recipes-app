@@ -26,7 +26,7 @@ class RecipeSeeder extends Seeder
             'title' => 'Spaghetti Carbonara',
             'description' => 'Ein klassisches italienisches Pastagericht.',
             'instructions' => '1. Spaghetti kochen. 2. Speck anbraten. 3. Eier und Käse vermischen. 4. Alles vermengen.',
-            'image' => 'images/carbonara.webp',
+            'image' => 'images/carbonara.jpg',
         ]);
 
         // Beziehungen setzen
