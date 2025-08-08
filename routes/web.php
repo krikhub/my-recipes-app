@@ -10,13 +10,24 @@ Route::get('/', function () {
     return view('home', compact('recipes'));
 });
 
+Route::get('/recipes', function(Request $request) {
+    $categoryId = $request->input('category');
+    $recipes = Recipe::where('category_id', $categoryId)->get();
+    return view('recipes.index', ['recipes' => $recipes]);
+});
+
+
 Route::get('/search', [RecipeController::class, 'search']);
 
 Route::get('/home', [RecipeController::class, 'index'])->name('home');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/rezepte/neu', [RecipeController::class, 'create'])->name('recipes.create');
-    Route::post('/rezepte', [RecipeController::class, 'store'])->name('recipes.store');
-});
+Route::get('/recipes/{recipe}', [RecipeController::class, 'show'])->name('recipes.show');
+
+Route::post('/recipes', 'RecipeController@store');
+
+Route::get('/recipes/create', 'RecipeController@create');
+
+
+
 
 

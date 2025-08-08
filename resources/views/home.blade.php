@@ -9,8 +9,10 @@
                 <p>Keine Ergebnisse gefunden.</p>
             @else
                 @foreach($recipes as $recipe)
+                <a href="{{ route('recipes.show', $recipe->id) }}">
                     <x-utils.recipe-card :recipe="$recipe" />
-                @endforeach
+                </a>
+            @endforeach
             @endif
         </div>
     </x-layouts.max-width>

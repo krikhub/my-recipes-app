@@ -49,4 +49,9 @@ class RecipeController extends BaseController
         }
         return view('home', compact('recipes'));
     }
+
+    public function show(Recipe $recipe)
+    {
+        return view('show', ['recipe' => $recipe]);
+    }
 }
