@@ -54,15 +54,27 @@ class RecipeController extends BaseController
     }
 
     public function index(Request $request)
-    {
-        $query = $request->input('query');
-        if ($query) {
-            $recipes = Recipe::where('title', 'like', '%' . $query . '%')->get();
-        } else {
-            $recipes = Recipe::all();
-        }
-        return view('home', compact('recipes'));
+{
+    $category = $request->input('category');
+    $query = Recipe::query();
+
+    if ($category) {
+        // Rezepte filtern, die diese Kategorie enthalten
+        $query->where('categories', 'like', '%' . $category . '%');
     }
+
+    $recipes = $query->get();
+
+    // Alle möglichen Kategorien (könntest du auch aus DB ziehen)
+    $allCategories = [
+        'breakfast', 'lunch', 'dinner', 'dessert',
+        'snacks', 'beverages', 'vegetarian', 'vegan',
+        'gluten-free', 'low-carb', 'quick-easy', 'slow-cooker',
+        'holiday-special', 'international', 'kids-friendly'
+    ];
+
+    return view('home', compact('recipes', 'allCategories', 'category'));
+}
 
     public function show(Recipe $recipe)
     {
