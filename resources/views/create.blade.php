@@ -44,11 +44,6 @@
     </select>
   </div>
 
-  <div>
-    <label for="tags">Tags:</label>
-    <input type="text" id="tags" name="tags" placeholder="Enter tags separated by commas">
-  </div>
-
   <div id="ingredients-container">
     <h3>Ingredients:</h3>
     <textarea id="ingredients" name="ingredients"></textarea>

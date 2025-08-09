@@ -1,7 +1,9 @@
 <div class="bg-white shadow-md rounded-lg overflow-hidden p-4">
-    @if($recipe->image && file_exists(public_path($recipe->image)))
-        <img src="{{ asset($recipe->image) }}" alt="{{ $recipe->title }}" class="w-full h-48 object-cover rounded-md mb-3">
+    @if($recipe->image)
+        <img src="{{ asset($recipe->image) }}" alt="Recipe image">
     @endif
+
+
 
     <h2 class="text-xl font-semibold mb-1">{{ $recipe->title }}</h2>
 

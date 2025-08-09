@@ -20,7 +20,6 @@ class RecipeController extends BaseController
         $recipe->description = $request->input('description');
         $recipe->instructions = $request->input('instructions');
         $recipe->categories = implode(',', $request->input('categories', []));
-        $recipe->tags = $request->input('tags');
         $recipe->ingredients = $request->input('ingredients');
         $recipe->calories = $request->input('calories');
         $recipe->fat = $request->input('fat');
@@ -28,10 +27,19 @@ class RecipeController extends BaseController
         $recipe->protein = $request->input('protein');
         $recipe->unit = $request->input('unit');
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('public/images');
-            $recipe->image = $imagePath;
+            if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+
+            // Hier: direkt in public/images speichern (NICHT storage/app/public)
+            $file->move(public_path('images'), $filename);
+
+            // Pfad in DB speichern — relativ zum public Ordner
+            $recipe->image = 'images/' . $filename;
         }
+
+
+
 
         $recipe->save();
 
@@ -45,7 +53,7 @@ class RecipeController extends BaseController
         return view('search-results', compact('recipes'));
     }
 
-   public function index(Request $request)
+    public function index(Request $request)
     {
         $query = $request->input('query');
         if ($query) {
