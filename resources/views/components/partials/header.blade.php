@@ -13,16 +13,18 @@
         <nav class="shrink-0">
             <ul class="flex gap-6">
                 <li>
-                    <x-typography.paragraph style="lg" as="a" source="http://127.0.0.1:8000/">
+                    <x-typography.paragraph style="lg" as="a">
                     <a source="">
                         Rezepte
                     </a>
                     </x-typography.paragraph>   
                 </li>
                 <li>
-                    <x-typography.paragraph style="lg" as="a" source="http://127.0.0.1:8000/">
-                        +
-                    </x-typography.paragraph>   
+                    <a href="{{ route('create') }}" class="btn btn-primary">
+                        <button>
+                            +
+                        </button>
+                    </a>
                 </li>
             </ul>
         </nav>

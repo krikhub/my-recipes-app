@@ -6,18 +6,29 @@
 
     <h2>Ingredients:</h2>
     <ul>
-        @foreach($recipe->ingredients as $ingredient)
-            <li>{{ $ingredient->name }} ({{ $ingredient->quantity }})</li>
-        @endforeach
+         @if(!empty($recipe->ingredients))
+    @foreach($recipe->ingredients as $ingredient)
+        <li>{{ $ingredient['name'] }} ({{ $ingredient['quantity'] }})</li>
+    @endforeach
+@else
+    <p>No ingredients found.</p>
+@endif
+
+
     </ul>
 
     <h2>Nutrition Information:</h2>
-    <ul>
-        <li>Calories: {{ $recipe->nutrition->calories }} {{ $recipe->nutrition->unit }}</li>
-        <li>Fat: {{ $recipe->nutrition->fat }}g</li>
-        <li>Carbohydrates: {{ $recipe->nutrition->carbohydrates }}g</li>
-        <li>Protein: {{ $recipe->nutrition->protein }}g</li>
-    </ul>
+
+    @if($recipe->nutrition)
+        <ul>
+            <li>Calories: {{ $recipe->nutrition->calories ?? 'N/A' }} {{ $recipe->nutrition->unit ?? '' }}</li>
+            <li>Fat: {{ $recipe->nutrition->fat ?? 'N/A' }}g</li>
+            <li>Carbohydrates: {{ $recipe->nutrition->carbohydrates ?? 'N/A' }}g</li>
+            <li>Protein: {{ $recipe->nutrition->protein ?? 'N/A' }}g</li>
+        </ul>
+    @else
+        <p>Nutrition information not available.</p>
+    @endif
 
     <h2>Instructions:</h2>
     <p>{{ $recipe->instructions }}</p>

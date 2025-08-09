@@ -10,26 +10,32 @@ class RecipeController extends BaseController
 {
     public function create()
     {
-        return view('recipes.create');
+        return view('create');
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required',
-            'instructions' => 'required',
-            'image' => 'nullable|image|max:2048',
-        ]);
+        $recipe = new Recipe();
+        $recipe->title = $request->input('title');
+        $recipe->description = $request->input('description');
+        $recipe->instructions = $request->input('instructions');
+        $recipe->categories = implode(',', $request->input('categories', []));
+        $recipe->tags = $request->input('tags');
+        $recipe->ingredients = $request->input('ingredients');
+        $recipe->calories = $request->input('calories');
+        $recipe->fat = $request->input('fat');
+        $recipe->carbohydrates = $request->input('carbohydrates');
+        $recipe->protein = $request->input('protein');
+        $recipe->unit = $request->input('unit');
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('images', 'public');
-            $validated['image'] = 'storage/' . $path;
+            $imagePath = $request->file('image')->store('public/images');
+            $recipe->image = $imagePath;
         }
 
-        auth()->user()->recipes()->create($validated);
+        $recipe->save();
 
-        return redirect()->route('dashboard')->with('success', 'Rezept gespeichert!');
+        return redirect()->route('dashboard')->with('success', 'Recipe created successfully!');
     }
 
     public function search(Request $request)

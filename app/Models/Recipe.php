@@ -9,8 +9,25 @@ class Recipe extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'instructions', 'image'];
+     protected $fillable = [
+        'title',
+        'description',
+        'instructions',
+        'categories',
+        'tags',
+        'ingredients',
+        'calories',
+        'fat',
+        'carbohydrates',
+        'protein',
+        'unit',
+        'image',
+    ];
 
+    protected $casts = [
+    'ingredients' => 'array',
+    ];
+    
     public function categories()
     {
         return $this->belongsToMany(Category::class);
